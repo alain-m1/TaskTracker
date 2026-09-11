@@ -1,0 +1,20 @@
+## Build
+build/
+bin/
+out/
+
+## Backend (Maven)
+backend/target/
+
+## Frontend (Node)
+frontend/node_modules/
+frontend/dist/
+
+## OS / editor
+.DS_Store
+.idea/
+*.iml
+.vscode/
+
+## Environment/secrets
+.env
