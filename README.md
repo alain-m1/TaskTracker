@@ -12,9 +12,11 @@ via SQL.
 
 ## Prerequisites
 
-- Java 17+ and Maven
+- Java 21+ and Maven
 - Node 18+ and npm
 - A running MySQL server (8.x recommended)
+- Google Chrome installed (needed for the Selenium suite - Playwright and
+  Cypress each install their own browser binaries separately)
 
 ## 1. Database setup
 
@@ -63,32 +65,53 @@ secure anything):
 - Username: `tester`
 - Password: `TestPass123`
 
+## Test suites
+
+Three end-to-end test suites live alongside this app, each exercising the
+same core scenarios (login, task CRUD, filtering, editing) in a different
+tool, plus one API-level test per suite that hits the backend directly:
+
+| Suite      | Language/tooling  | Folder                                |
+|------------|-------------------|---------------------------------------|
+| Playwright | JavaScript        | [`playwright/`](playwright/README.md) |
+| Cypress    | JavaScript        | [`cypress/`](cypress/README.md)       |
+| Selenium   | Java + JUnit 5    | [`selenium/`](selenium/README.md)     |
+
+Each folder's own README has full setup and run instructions, plus notes on
+how that tool's approach differs from the other two (auto-waiting, locator
+style, Page Object Model, and so on). Both the backend and frontend need to
+be running first for any of them.
+
 ## API reference
 
-| Method | Path              | Body                        | Notes                              |
-|--------|-------------------|------------------------------|-------------------------------------|
-| POST   | `/api/login`       | `{ username, password }`    | 200 + token, or 401                |
-| GET    | `/api/tasks`       | —                            | optional `?status=active\|completed` |
-| GET    | `/api/tasks/stats` | —                            | `{ total, active, completed }`     |
-| POST   | `/api/tasks`       | `{ title }`                 | 201 + created task                 |
-| PUT    | `/api/tasks/{id}`  | `{ completed }`              | toggles complete                   |
-| DELETE | `/api/tasks/{id}`  | —                            | 204                                |
+| Method | Path               | Body                        | Notes                                 |
+|--------|--------------------|-----------------------------|---------------------------------------|
+| POST   | `/api/login`       | `{ username, password }`    | 200 + token, or 401                   |
+| GET    | `/api/tasks`       | N/A                         | optional `?status=active\|completed`  |
+| GET    | `/api/tasks/stats` | N/A                         | `{ total, active, completed }`        |
+| POST   | `/api/tasks`       | `{ title }`                 | 201 + created task                    |
+| PUT    | `/api/tasks/{id}`  | `{ completed }`             | toggles complete                      |
+| DELETE | `/api/tasks/{id}`  | N/A                         | 204                                   |
 
 ## data-testid reference (for writing selectors for tests)
 
-| Element                          | `data-testid`         |
-|-----------------------------------|------------------------|
-| Login form                        | `login-form`           |
-| Username field                    | `username-input`       |
-| Password field                    | `password-input`       |
-| Login submit button               | `login-button`         |
-| Login error message                | `login-error`          |
-| New task input                    | `new-task-input`       |
-| Add task button                   | `add-task-button`      |
-| Filter: all / active / completed  | `filter-all` / `filter-active` / `filter-completed` |
-| Task list container               | `task-list`            |
-| Each task row                     | `task-item` (also has `data-task-id`) |
-| Task checkbox                     | `task-checkbox`        |
-| Task title text                   | `task-title`           |
-| Task delete button                | `task-delete-button`   |
-| Stats panel                       | `stats-panel` (`stats-total` / `stats-active` / `stats-completed`) |
+| Element                                       | `data-testid`                                                      |
+|-----------------------------------------------|--------------------------------------------------------------------|
+| Login form                                    | `login-form`                                                       |
+| Username field                                | `username-input`                                                   |
+| Password field                                | `password-input`                                                   |
+| Login submit button                           | `login-button`                                                     |
+| Login error message                           | `login-error`                                                      |
+| New task input                                | `new-task-input`                                                   |
+| Add task button                               | `add-task-button`                                                  |
+| Filter: all / active / completed              | `filter-all` / `filter-active` / `filter-completed`                |
+| Task list container                           | `task-list`                                                        |
+| Each task row                                 | `task-item` (also has `data-task-id`)                              |
+| Task checkbox                                 | `task-checkbox`                                                    |
+| Task title text                               | `task-title`                                                       |
+| Task title edit input (shown while editing)   | `task-edit-input`                                                  |
+| Edit button                                   | `task-edit-button`                                                 |
+| Save edit button                              | `task-save-button`                                                 |
+| Cancel edit button                            | `task-cancel-button`                                               |
+| Task delete button                            | `task-delete-button`                                               |
+| Stats panel                                   | `stats-panel` (`stats-total` / `stats-active` / `stats-completed`) |
