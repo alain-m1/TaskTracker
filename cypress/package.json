@@ -1,0 +1,12 @@
+{
+  "name": "task-tracker-cypress-tests",
+  "private": true,
+  "version": "0.0.1",
+  "scripts": {
+    "test": "cypress run",
+    "test:open": "cypress open"
+  },
+  "devDependencies": {
+    "cypress": "^13.15.0"
+  }
+}
